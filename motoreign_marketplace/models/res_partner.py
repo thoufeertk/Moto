@@ -142,7 +142,7 @@ class ResPartner(models.Model):
         internal_group = self.env.ref('base.group_user')
         stock_group = self.env.ref('stock.group_stock_user')
         sale_group = self.env.ref('sales_team.group_sale_manager')
-        user.sudo().write({'groups_id': [(6, 0, [
+        user.sudo().write({'group_ids': [(6, 0, [
             internal_group.id, seller_group.id, stock_group.id, sale_group.id
         ])]})
         # Remove salesman sub-groups to avoid conflicts

@@ -12,4 +12,4 @@ def pre_init_hook(env):
     """Hide inventory root menu from seller group on install"""
     res = env.ref('stock.menu_stock_root')
     res1 = env.ref('stock.group_stock_user')
-    res.write({'groups_id': [(3, res1.id, 0)]})
+    res.write({'group_ids': [(3, res1.id, 0)]})

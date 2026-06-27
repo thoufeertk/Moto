@@ -5,7 +5,7 @@
         <field name="name">Order Analysis</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order</field>
-        <field name="view_mode">graph,tree,form</field>
+        <field name="view_mode">graph,list,form</field>
     </record>
     <!--        Order Analysis menu-->
     <menuitem id="order-analysis" parent="sales"
@@ -19,8 +19,7 @@
         <field name="type">graph</field>
         <field name="arch" type="xml">
             <graph string="Book" type="bar">
-                <field name="tax_totals"/>
-                <field name="create_date"/>
+                                <field name="create_date"/>
                 <field name="partner_id"/>
             </graph>
         </field>

@@ -4,7 +4,7 @@
     <record id="seller_review_action" model="ir.actions.act_window">
         <field name="name">Seller Review</field>
         <field name="res_model">seller.review</field>
-        <field name="view_mode">kanban,form,tree</field>
+        <field name="view_mode">kanban,form,list</field>
         <field name="context">{"search_default_state_filter":1}</field>
     </record>
 <!--    Tree view-->
@@ -127,15 +127,13 @@
                     <div style="color: #7c6ca1; font-size:20px;">
                         Review Helpful / Not Helpful
                     </div>
-                    <field name="help_info_ids" widget="one2many_list">
+                    <field name="help_info_ids" >
                         <list editable="bottom">
                             <field name="customer_id"/>
                             <field name="msg"/>
                         </list>
                     </field>
-                </sheet>
-                <sheet>
-                    <div class="oe_chatter">
+                <div class="oe_chatter">
                         <field name="message_follower_ids"/>
                         <field name="message_ids"/>
                     </div>

@@ -48,7 +48,7 @@
                         <page string="Information">
                             <group>
                                 <group>
-                                    <field name="detailed_type"
+                                    <field name="type"
                                            string="Product Type"/>
                                     <field name="categ_id"
                                            string="Internal Category"/>
