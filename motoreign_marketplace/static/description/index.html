@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { font-family: Arial, sans-serif; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; }
+  .header { background: linear-gradient(135deg, #0A1628, #0A3D6E); color: white; padding: 40px; border-radius: 8px; margin-bottom: 30px; }
+  .header h1 { margin: 0 0 10px; font-size: 32px; }
+  .header p { margin: 0; color: #A8C4E0; font-size: 16px; }
+  .badge { display: inline-block; background: #F5A623; color: #0A1628; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 12px; margin-bottom: 16px; }
+  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+  .feature { background: #F0F7FF; border: 1px solid #DCE8F8; border-radius: 8px; padding: 20px; }
+  .feature h3 { color: #0A1628; margin: 0 0 8px; font-size: 14px; }
+  .feature p { margin: 0; color: #64748B; font-size: 13px; line-height: 1.5; }
+  .section { margin: 30px 0; }
+  .section h2 { color: #0A1628; border-bottom: 2px solid #0A66C2; padding-bottom: 8px; }
+  ul { line-height: 2; }
+  .contact { background: #0A1628; color: white; padding: 30px; border-radius: 8px; margin-top: 30px; }
+  .contact a { color: #F5A623; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="badge">Odoo 19 Enterprise | LGPL-3</div>
+  <h1>Motoreign Multi Vendor Marketplace</h1>
+  <p>A complete multi-vendor eCommerce marketplace built for Odoo 19 Enterprise. Enable multiple sellers to manage their own products, orders, and profiles while admins control commissions, approvals, and payments.</p>
+</div>
+
+<div class="section">
+  <h2>Key Features</h2>
+  <div class="features">
+    <div class="feature"><h3>Seller Registration</h3><p>Sellers sign up via the website and go through an admin approval workflow before listing products.</p></div>
+    <div class="feature"><h3>Commission Management</h3><p>Set global or per-seller commission rates. Commissions auto-calculate on order confirmation.</p></div>
+    <div class="feature"><h3>Product Approval</h3><p>Admin manually or automatically approves seller products before they appear on the shop.</p></div>
+    <div class="feature"><h3>Seller Dashboard</h3><p>Real-time dashboard showing product, order, payment, and inventory request counts.</p></div>
+    <div class="feature"><h3>Inventory Requests</h3><p>Sellers submit quantity requests; admins approve to update stock using Odoo's inventory.</p></div>
+    <div class="feature"><h3>Seller Payments</h3><p>Complete payment workflow from request to validation with auto vendor bill creation.</p></div>
+    <div class="feature"><h3>Ratings &amp; Reviews</h3><p>Customers rate and review sellers. Reviews can be auto-published or manually approved.</p></div>
+    <div class="feature"><h3>ZATCA Ready</h3><p>Inherits Odoo 19's full VAT/ZATCA compliance out of the box for Saudi Arabia operations.</p></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Dependencies</h2>
+  <ul>
+    <li>Inventory (stock)</li>
+    <li>Invoicing (account)</li>
+    <li>Sales (sale_management)</li>
+    <li>Website (website)</li>
+    <li>eCommerce (website_sale)</li>
+    <li>Discuss (mail)</li>
+    <li>Sale PDF Quote Builder</li>
+    <li>Auth Signup</li>
+  </ul>
+</div>
+
+<div class="contact">
+  <h3 style="margin:0 0 10px; color:#F5A623;">Motoreign</h3>
+  <p style="margin:0; color:#A8C4E0;">For support and customization, contact us at <a href="mailto:info@motoreign.com">info@motoreign.com</a> or visit <a href="https://motoreign.com">motoreign.com</a></p>
+</div>
+</body>
+</html>

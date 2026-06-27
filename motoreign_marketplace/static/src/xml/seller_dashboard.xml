@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Motoreign Multi Vendor Marketplace - Odoo 19 Dashboard Template -->
+<templates xml:space="preserve">
+    <t t-name="motoreign_marketplace.SellerDashboard">
+        <div class="motoreign_dashboard o_action">
+            <div class="container-fluid">
+                <!-- Products Section -->
+                <div class="row mt16 mb16">
+                    <div class="col-12">
+                        <h4 class="text-muted mb8">Products</h4>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center border-warning cursor-pointer"
+                             t-on-click="() => openProducts('pending')">
+                            <div class="card-body">
+                                <h2 class="text-warning" t-esc="state.pending"/>
+                                <p class="mb-0">Pending</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center border-success cursor-pointer"
+                             t-on-click="() => openProducts('approved')">
+                            <div class="card-body">
+                                <h2 class="text-success" t-esc="state.approved"/>
+                                <p class="mb-0">Approved</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center border-danger cursor-pointer"
+                             t-on-click="() => openProducts('rejected')">
+                            <div class="card-body">
+                                <h2 class="text-danger" t-esc="state.rejected"/>
+                                <p class="mb-0">Rejected</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Section -->
+                <div class="row mt16 mb16">
+                    <div class="col-12">
+                        <h4 class="text-muted mb8">Orders</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center border-warning cursor-pointer"
+                             t-on-click="() => openOrders('pending')">
+                            <div class="card-body">
+                                <h2 class="text-warning" t-esc="state.order_pending"/>
+                                <p class="mb-0">Pending</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center border-info cursor-pointer"
+                             t-on-click="() => openOrders('approved')">
+                            <div class="card-body">
+                                <h2 class="text-info" t-esc="state.order_approved"/>
+                                <p class="mb-0">Approved</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center border-success cursor-pointer"
+                             t-on-click="() => openOrders('shipped')">
+                            <div class="card-body">
+                                <h2 class="text-success" t-esc="state.order_shipped"/>
+                                <p class="mb-0">Shipped</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center border-danger cursor-pointer"
+                             t-on-click="() => openOrders('cancel')">
+                            <div class="card-body">
+                                <h2 class="text-danger" t-esc="state.order_cancel"/>
+                                <p class="mb-0">Cancelled</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin-only sections -->
+                <t t-if="state.user_type">
+                    <div class="row mt16 mb16">
+                        <div class="col-12"><h4 class="text-muted mb8">Sellers</h4></div>
+                        <div class="col-md-4">
+                            <div class="card text-center border-warning cursor-pointer"
+                                 t-on-click="() => openSellers('Pending for Approval')">
+                                <div class="card-body">
+                                    <h2 class="text-warning" t-esc="state.seller_pending"/>
+                                    <p class="mb-0">Pending</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center border-success cursor-pointer"
+                                 t-on-click="() => openSellers('Approved')">
+                                <div class="card-body">
+                                    <h2 class="text-success" t-esc="state.seller_approved"/>
+                                    <p class="mb-0">Approved</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center border-danger cursor-pointer"
+                                 t-on-click="() => openSellers('Denied')">
+                                <div class="card-body">
+                                    <h2 class="text-danger" t-esc="state.seller_rejected"/>
+                                    <p class="mb-0">Rejected</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt16 mb16">
+                        <div class="col-12"><h4 class="text-muted mb8">Payments</h4></div>
+                        <div class="col-md-4">
+                            <div class="card text-center border-warning cursor-pointer"
+                                 t-on-click="() => openPayments('Requested')">
+                                <div class="card-body">
+                                    <h2 class="text-warning" t-esc="state.payment_pending"/>
+                                    <p class="mb-0">Requested</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center border-success cursor-pointer"
+                                 t-on-click="() => openPayments('Validated')">
+                                <div class="card-body">
+                                    <h2 class="text-success" t-esc="state.payment_approved"/>
+                                    <p class="mb-0">Validated</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center border-danger cursor-pointer"
+                                 t-on-click="() => openPayments('Rejected')">
+                                <div class="card-body">
+                                    <h2 class="text-danger" t-esc="state.payment_rejected"/>
+                                    <p class="mb-0">Rejected</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt16 mb16">
+                        <div class="col-12"><h4 class="text-muted mb8">Inventory Requests</h4></div>
+                        <div class="col-md-4">
+                            <div class="card text-center border-warning cursor-pointer"
+                                 t-on-click="() => openInventory('Requested')">
+                                <div class="card-body">
+                                    <h2 class="text-warning" t-esc="state.inventory_pending"/>
+                                    <p class="mb-0">Requested</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center border-success cursor-pointer"
+                                 t-on-click="() => openInventory('Approved')">
+                                <div class="card-body">
+                                    <h2 class="text-success" t-esc="state.inventory_approved"/>
+                                    <p class="mb-0">Approved</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center border-danger cursor-pointer"
+                                 t-on-click="() => openInventory('Rejected')">
+                                <div class="card-body">
+                                    <h2 class="text-danger" t-esc="state.inventory_rejected"/>
+                                    <p class="mb-0">Rejected</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
