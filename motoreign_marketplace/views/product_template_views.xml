@@ -123,7 +123,7 @@
                             </group>
                             <group>
                                 <group>
-                                    <field name="forcasted_qty"/>
+                                    <field name="forecasted_qty"/>
                                     <field name="initial_qty"/>
 
                                     <field name="weight"/>
