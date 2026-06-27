@@ -7,7 +7,7 @@ from odoo.http import request
 class SellerDashboard(http.Controller):
     """JSON endpoint powering the seller/admin dashboard widget"""
 
-    @http.route(['/seller_dashboard'], type='json', auth="user", website=True)
+    @http.route(['/seller_dashboard'], type='jsonrpc', auth="user", website=True)
     def seller_dashboard(self):
         """Return counts for all dashboard tiles"""
         env = request.env

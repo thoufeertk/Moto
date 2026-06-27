@@ -1,27 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record model="ir.module.category" id="module_category_motoreign_marketplace">
         <field name="name">Motoreign Marketplace</field>
         <field name="description">User access rights for Motoreign Marketplace</field>
         <field name="sequence">20</field>
     </record>
-
     <record id="privilege_motoreign_marketplace" model="res.groups.privilege">
         <field name="name">Motoreign Marketplace</field>
         <field name="category_id" ref="module_category_motoreign_marketplace"/>
     </record>
-
     <record id="motoreign_marketplace_admin" model="res.groups">
         <field name="name">Admin</field>
         <field name="privilege_id" ref="privilege_motoreign_marketplace"/>
         <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
     </record>
-
     <record id="motoreign_marketplace_seller" model="res.groups">
         <field name="name">Seller</field>
         <field name="privilege_id" ref="privilege_motoreign_marketplace"/>
     </record>
-
     <record id="motoreign_marketplace_req_seller" model="res.groups">
         <field name="name">Requested Seller</field>
         <field name="privilege_id" ref="privilege_motoreign_marketplace"/>

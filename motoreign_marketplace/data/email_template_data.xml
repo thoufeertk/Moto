@@ -4,14 +4,13 @@
         <field name="name">New Seller Request- Admin mail</field>
         <field name="model_id" ref="motoreign_marketplace.model_res_partner"/>
         <field name="auto_delete" eval="True"/>
-        <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+        <field name="email_from">{{ object.company_id.email or user.email }}</field>
         <field name="email_to">{{ object.company_id.email }}</field>
         <field name="subject">New Seller Request from {{ object.name }}</field>
         <field name="body_html" type="html">
             <p>Dear Admin,<br/>A new seller <strong><t t-out="object.name"/></strong> has been requested. Please Approve or Reject.</p>
         </field>
     </record>
-
     <record id="seller_request_seller_mail_template" model="mail.template">
         <field name="name">New Seller Request- Seller mail</field>
         <field name="model_id" ref="motoreign_marketplace.model_res_partner"/>
@@ -20,10 +19,9 @@
         <field name="email_to">{{ object.email }}</field>
         <field name="subject">Seller Request Under Progress</field>
         <field name="body_html" type="html">
-            <p>Dear Mr/Ms <t t-out="object.name"/>,<br/>You have requested to become a seller. Please wait for your approval.</p>
+            <p>Dear <t t-out="object.name"/>,<br/>You have requested to become a seller. Please wait for approval.</p>
         </field>
     </record>
-
     <record id="seller_state_admin_mail_template" model="mail.template">
         <field name="name">Seller Approve/Reject-Admin mail</field>
         <field name="model_id" ref="motoreign_marketplace.model_res_partner"/>
@@ -33,11 +31,10 @@
         <field name="subject">Seller {{ object.name }} Status Updated</field>
         <field name="body_html" type="html">
             <p>Dear Admin,</p>
-            <t t-if="object.state == 'Approved'"><p>Seller <strong><t t-out="object.display_name"/></strong> has been approved.</p></t>
-            <t t-if="object.state == 'Denied'"><p>Seller <strong><t t-out="object.display_name"/></strong> has been rejected.</p></t>
+            <t t-if="object.state == 'Approved'"><p>Seller <strong><t t-out="object.display_name"/></strong> approved.</p></t>
+            <t t-if="object.state == 'Denied'"><p>Seller <strong><t t-out="object.display_name"/></strong> rejected.</p></t>
         </field>
     </record>
-
     <record id="seller_state_seller_mail_template" model="mail.template">
         <field name="name">Seller Approve/Reject- Seller mail</field>
         <field name="model_id" ref="motoreign_marketplace.model_res_partner"/>
@@ -46,11 +43,10 @@
         <field name="email_to">{{ object.email }}</field>
         <field name="subject">Your Seller Status: {{ object.name }}</field>
         <field name="body_html" type="html">
-            <t t-if="object.state == 'Approved'"><p>Dear <t t-out="object.display_name"/>,<br/>Congratulations! You have been approved as a seller.</p></t>
-            <t t-if="object.state == 'Denied'"><p>Dear <t t-out="object.display_name"/>,<br/>Sorry, your seller request has been rejected.</p></t>
+            <t t-if="object.state == 'Approved'"><p>Dear <t t-out="object.display_name"/>,<br/>Congratulations! You are approved as a seller.</p></t>
+            <t t-if="object.state == 'Denied'"><p>Dear <t t-out="object.display_name"/>,<br/>Sorry, your seller request was rejected.</p></t>
         </field>
     </record>
-
     <record id="product_state_admin_mail_template" model="mail.template">
         <field name="name">Product Approve/Reject - Admin mail</field>
         <field name="model_id" ref="motoreign_marketplace.model_product_template"/>
@@ -59,11 +55,10 @@
         <field name="email_to">{{ object.company_id.email }}</field>
         <field name="subject">Product {{ object.name }} from {{ object.seller_id.name }}</field>
         <field name="body_html" type="html">
-            <t t-if="object.state == 'approved'"><p>Dear Admin,<br/>Product <strong><t t-out="object.name"/></strong> from <t t-out="object.seller_id.name"/> has been approved.</p></t>
-            <t t-if="object.state == 'rejected'"><p>Dear Admin,<br/>Product <strong><t t-out="object.name"/></strong> from <t t-out="object.seller_id.name"/> has been rejected.</p></t>
+            <t t-if="object.state == 'approved'"><p>Dear Admin,<br/>Product <strong><t t-out="object.name"/></strong> from <t t-out="object.seller_id.name"/> approved.</p></t>
+            <t t-if="object.state == 'rejected'"><p>Dear Admin,<br/>Product <strong><t t-out="object.name"/></strong> from <t t-out="object.seller_id.name"/> rejected.</p></t>
         </field>
     </record>
-
     <record id="product_state_seller_mail_template" model="mail.template">
         <field name="name">Product Approve/Reject - Seller mail</field>
         <field name="model_id" ref="motoreign_marketplace.model_product_template"/>
@@ -72,20 +67,19 @@
         <field name="email_to">{{ object.seller_id.email }}</field>
         <field name="subject">Your Product: {{ object.name }}</field>
         <field name="body_html" type="html">
-            <t t-if="object.state == 'approved'"><p>Dear <t t-out="object.seller_id.name"/>,<br/>Congratulations! Your product <strong><t t-out="object.name"/></strong> has been approved for sale.</p></t>
-            <t t-if="object.state == 'rejected'"><p>Dear <t t-out="object.seller_id.name"/>,<br/>Sorry, your product <strong><t t-out="object.name"/></strong> has not been approved.</p></t>
+            <t t-if="object.state == 'approved'"><p>Dear <t t-out="object.seller_id.name"/>,<br/>Your product <strong><t t-out="object.name"/></strong> is approved for sale!</p></t>
+            <t t-if="object.state == 'rejected'"><p>Dear <t t-out="object.seller_id.name"/>,<br/>Your product <strong><t t-out="object.name"/></strong> was not approved.</p></t>
         </field>
     </record>
-
     <record id="new_order_seller_mail_template" model="mail.template">
         <field name="name">New Sale Order - Seller mail</field>
         <field name="model_id" ref="sale.model_sale_order"/>
         <field name="auto_delete" eval="True"/>
         <field name="email_from">{{ object.company_id.email }}</field>
         <field name="email_to">{{ object.seller_id.email }}</field>
-        <field name="subject">New Order {{ object.name }} from your shop</field>
+        <field name="subject">New Order {{ object.name }}</field>
         <field name="body_html" type="html">
-            <p>Dear <t t-out="object.seller_id.name"/>,<br/>A new Sale Order <strong>{{ object.name }}</strong> has been placed from your shop.</p>
+            <p>Dear <t t-out="object.seller_id.name"/>,<br/>New Sale Order <strong>{{ object.name }}</strong> placed from your shop.</p>
         </field>
     </record>
 </odoo>

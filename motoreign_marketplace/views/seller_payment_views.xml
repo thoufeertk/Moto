@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!--    Seller payment Action-->
     <record id="seller_payment_action" model="ir.actions.act_window">
         <field name="name">Seller Payment</field>
         <field name="res_model">seller.payment</field>
-        <field name="context">{'search_default_seller': 1}</field>
         <field name="view_mode">list,form</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">Seller's Payment</p>
-        </field>
     </record>
-<!--    Tree view-->
     <record id="seller_payment_view_tree" model="ir.ui.view">
-        <field name="name">seller.payment.view.tree</field>
+        <field name="name">seller.payment.view.list</field>
         <field name="model">seller.payment</field>
         <field name="arch" type="xml">
             <list>
@@ -27,29 +21,23 @@
             </list>
         </field>
     </record>
-<!--    Form view-->
     <record id="seller_payment_view_form" model="ir.ui.view">
-        <field name="name">Seller Payment</field>
+        <field name="name">seller.payment.view.form</field>
         <field name="model">seller.payment</field>
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="validate" class="oe_highlight"
-                            string="Validate" invisible="state != 'Requested'"
-                            type="object"
+                    <button name="validate" class="oe_highlight" string="Validate"
+                            invisible="state != 'Requested'" type="object"
                             groups="motoreign_marketplace.motoreign_marketplace_admin"/>
-                    <button name="reject" class="oe_highlight"
-                            string="Rejected" invisible="state != 'Requested'"
-                            type="object"
+                    <button name="reject" class="oe_highlight" string="Reject"
+                            invisible="state != 'Requested'" type="object"
                             groups="motoreign_marketplace.motoreign_marketplace_admin"/>
                     <button name="request" type="object" string="Request"
-                            class="oe_highlight"
-                            invisible="state != 'Draft'"
+                            class="oe_highlight" invisible="state != 'Draft'"
                             groups="motoreign_marketplace.motoreign_marketplace_seller,motoreign_marketplace.motoreign_marketplace_admin"/>
-                    <button name="cancel" type="object"
-                            string="Cancel" invisible="state != 'Draft'"/>
-                    <field name="state" widget="statusbar"
-                           statusbar_visible="Draft,Requested,Validated,Rejected"/>
+                    <button name="cancel" type="object" string="Cancel" invisible="state != 'Draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="Draft,Requested,Validated,Rejected"/>
                 </header>
                 <sheet>
                     <group>
@@ -76,29 +64,28 @@
             </form>
         </field>
     </record>
-<!--    Search view-->
     <record id="seller_payment_view_search" model="ir.ui.view">
-        <field name="name">Payment Search</field>
+        <field name="name">seller.payment.view.search</field>
         <field name="model">seller.payment</field>
         <field name="arch" type="xml">
-            <search string="Search contacts">
-                <group expand="0" string="Group By">
-                    <filter string="Seller" name="seller"
-                            context="{'group_by': 'seller_id'}"/>
-                </group>
+            <search string="Search Payments">
+                <field name="seller_id"/>
+                <field name="memo"/>
+                <filter string="Draft" name="draft" domain="[('state','=','Draft')]"/>
+                <filter string="Requested" name="requested" domain="[('state','=','Requested')]"/>
+                <filter string="Validated" name="validated" domain="[('state','=','Validated')]"/>
+                <separator/>
+                <filter string="Group by Seller" name="seller" context="{'group_by': 'seller_id'}"/>
             </search>
         </field>
     </record>
-<!--    Sequence number for Seller payment-->
     <record id="seller_payment_sequence" model="ir.sequence">
-        <field name="name">seller reference</field>
+        <field name="name">Seller Payment Reference</field>
         <field name="code">seller.payment</field>
         <field name="prefix">SP</field>
         <field name="padding">5</field>
     </record>
-<!--    Seller Payment menu-->
-    <menuitem id="seller_payment" parent="sales"
-              name="Seller Payment" sequence="27"
+    <menuitem id="seller_payment" parent="sales" name="Seller Payment" sequence="27"
               groups="motoreign_marketplace.motoreign_marketplace_admin,motoreign_marketplace.motoreign_marketplace_seller"
               action="motoreign_marketplace.seller_payment_action"/>
 </odoo>

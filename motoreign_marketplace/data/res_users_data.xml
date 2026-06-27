@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo noupdate="1">
     <record id="template_seller_user" model="res.users">
         <field name="name">Seller User Template</field>
