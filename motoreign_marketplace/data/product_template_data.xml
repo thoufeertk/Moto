@@ -2,6 +2,7 @@
 <odoo noupdate="1">
     <record id="seller_payment_product_creation" model="product.template">
         <field name="name">Seller Payment</field>
+        <!-- Odoo 19: field renamed to type -->
         <field name="type">service</field>
         <field name="sale_ok" eval="False"/>
         <field name="purchase_ok" eval="True"/>

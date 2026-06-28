@@ -97,7 +97,7 @@
                                             <img t-att-src="image_data_uri(user.image_1920)" style="width: 100%; height: 100%; object-fit: cover;" alt="Seller"/>
                                         </t>
                                         <t t-else="">
-                                            <img src="/motoreign_marketplace/static/src/img/user.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Seller"/>
+                                            <img src="/multi_vendor_marketplace/static/src/img/user.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Seller"/>
                                         </t>
                                     </div>
                                 </div>
@@ -237,7 +237,7 @@
                                                                         <img t-att-src="image_data_uri(data.image_1920)" alt="Product"/>
                                                                     </t>
                                                                     <t t-else="">
-                                                                        <img src="/motoreign_marketplace/static/src/img/product.png" alt="Product"/>
+                                                                        <img src="/multi_vendor_marketplace/static/src/img/product.png" alt="Product"/>
                                                                     </t>
                                                                 </div>
                                                                 <div class="product_name">
@@ -268,7 +268,7 @@
                                                                         <img t-att-src="image_data_uri(data.image_1920)" alt="Product"/>
                                                                     </t>
                                                                     <t t-else="">
-                                                                        <img src="/motoreign_marketplace/static/src/img/product.png" alt="Product"/>
+                                                                        <img src="/multi_vendor_marketplace/static/src/img/product.png" alt="Product"/>
                                                                     </t>
                                                                 </div>
                                                                 <div class="product_name">
@@ -833,7 +833,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-5">
-                                            <t t-set="show_review" t-value="request.env['ir.config_parameter'].sudo().get_param('motoreign_marketplace.show_seller_review')"/>
+                                            <t t-set="show_review" t-value="request.env['ir.config_parameter'].sudo().get_param('multi_vendor_marketplace.show_seller_review')"/>
                                             <t t-if="show_review">
                                                 <h4 class="fw-bold mb-4" style="color: #243c64;">Customer Reviews</h4>
                                                 <div class="row g-4">
@@ -847,7 +847,7 @@
                                                                                 <img t-att-src="image_data_uri(review.customer_id.image_1920)" style="width: 100%; height: 100%; object-fit: cover;" alt="Customer"/>
                                                                             </t>
                                                                             <t t-else="">
-                                                                                <img src="/motoreign_marketplace/static/src/img/user.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Customer"/>
+                                                                                <img src="/multi_vendor_marketplace/static/src/img/user.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Customer"/>
                                                                             </t>
                                                                         </div>
                                                                     </div>

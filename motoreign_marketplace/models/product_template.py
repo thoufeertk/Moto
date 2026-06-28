@@ -1,106 +1,184 @@
 # -*- coding: utf-8 -*-
-# Motoreign Multi Vendor Marketplace - Odoo 19
-# License LGPL-3.0
-
+#############################################################################
+#
+#    Cybrosys Technologies Pvt. Ltd.
+#
+#    Copyright (C) 2026-TODAY Cybrosys Technologies(<https://www.cybrosys.com>)
+#    Author: Cybrosys Techno Solutions(<https://www.cybrosys.com>)
+#
+#    You can modify it under the terms of the GNU LESSER
+#    GENERAL PUBLIC LICENSE (LGPL v3), Version 3.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU LESSER GENERAL PUBLIC LICENSE (LGPL v3) for more details.
+#
+#    You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+#    (LGPL v3) along with this program.
+#    If not, see <http://www.gnu.org/licenses/>.
+#
+#############################################################################
 from odoo import api, fields, models
 
 
 class ProductTemplate(models.Model):
-    """Extends product.template with seller assignment and approval workflow"""
+    """Inheriting ProductTemplate For adding new fields and Functions"""
     _inherit = "product.template"
 
-    website_category_id = fields.Many2one('product.public.category', string='Website Category')
-    cmpy_email = fields.Text(default=lambda self: self.env.company.email, string='Company Email')
-    seller_id = fields.Many2one('res.partner', string='Seller',
-                                default=lambda self: self.env.user.partner_id.id,
-                                domain=[('state', '=', 'Approved')])
-    seller_pic = fields.Binary(related='seller_id.image_1920', string='Seller Image')
-    web = fields.Many2one("website", string="Website")
-    alt_pro_id = fields.Many2one("product.template", string="Alternative Products")
-    acc_pro_id = fields.Many2one("product.template", string="Accessory Products")
-    forecasted_qty = fields.Integer(string='Forecasted Quantity')
-    initial_qty = fields.Integer(string='Initial Quantity')
-    state = fields.Selection([
-        ('draft', 'Draft'), ('pending', 'Pending'),
-        ('approved', 'Approved'), ('rejected', 'Rejected'),
-    ], string='Product Status', default='draft', readonly=True,
-       tracking=True, group_expand='_group_expand_states')
-    item_ids = fields.One2many('multi.vendor.pricelist', 'product_inv_id', string='Pricelist Items')
-    product_price_setting = fields.Boolean(string='Show Product Price')
-    product_variants_setting = fields.Boolean(string='Allow Variants')
-    product_uom = fields.Boolean(string='Show UoM')
+    website_category_id = fields.Many2one('product.public.category',
+                                          string='Website category',
+                                          help='Website category')
+    cmpy_email = fields.Text(
+        default=lambda self: self.env.user.company_id.email,
+        string='Company email',
+        help='Company address')
+    seller_id = fields.Many2one(
+        'res.partner', string='Seller',
+        help='Seller',
+        default=lambda self: self.env.user.partner_id.id,
+        domain=[('state', '=', 'Approved')])
+    seller_pic = fields.Binary(related='seller_id.image_1920',
+                               string='Seller image', help='Seller image')
+    web = fields.Many2one("website", string="Website",
+                          help='Website')
+    alt_pro_id = fields.Many2one("product.template",
+                              string="Alternative Products",
+                              help='Alternative Products')
+    acc_pro_id = fields.Many2one("product.template",
+                              string="Accessory Products",
+                              help='Accessory products')
+    forecasted_qty = fields.Integer(string='Forcasted quantity',
+                                   help='Forcasted quantity')
+    initial_qty = fields.Integer(string='Initial quantity',
+                                 help='Initial quantity')
+    state = fields.Selection(
+        [('draft', 'Draft'), ('pending', 'pending'),
+         ('approved', 'Approved'), ('rejected', 'Rejected')],
+        string='Product Status', group_expand='_group_expand_states',
+        default='draft', help='Product Status', tracking=True,
+        readonly=True)
+    item_ids = fields.One2many('multi.vendor.pricelist',
+                               'product_inv_id', string='Items',
+                               help='Items')
+    product_price_setting = fields.Boolean(string='Product price setting',
+                                           help='Product price setting')
+    product_variants_setting = fields.Boolean(string='Product variants '
+                                                     'settings',
+                                              help='Product variants settings')
+    product_uom = fields.Boolean(string='Product uom', help='Product uom')
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        res = super().create(vals_list)
-        categ_id = self.env['ir.config_parameter'].sudo().get_param(
-            'motoreign_marketplace.internal_categ_id')
-        if categ_id:
-            res.categ_id = int(categ_id)
+    def _create(self, data_list):
+        """Supering the create function to change category """
+        res = super(ProductTemplate, self)._create(data_list)
+        self.categ_id = [self.env['ir.config_parameter'].sudo().get_param(
+            'multi_vendor_marketplace.internal_categ_id')]
         return res
 
     def write(self, vals):
-        res = super().write(vals)
-        for line in self.item_ids:
-            existing = self.env['product.pricelist.item'].search([
-                ('pricelist_id', '=', line.price_list_id.id),
-                ('pricelist_multivendor_id', '=', line._origin.id),
-            ], limit=1)
-            item_vals = {
-                'product_tmpl_id': self._origin.id,
-                'min_quantity': line.min_qty,
-                'fixed_price': line.price_of_pricelist,
-                'date_start': line.start_date,
-                'date_end': line.end_date,
-            }
-            if existing:
-                existing.write(item_vals)
+        """ Pricelist Creation from Product form view """
+        res = super(ProductTemplate, self).write(vals)
+        for wdata in self.item_ids:
+            data_module = self.env['product.pricelist.item'].search(
+                [('pricelist_id', '=', wdata.price_list_id.id)])
+            if data_module:
+                dictionary = {}
+                dictionary.clear()
+                for data in data_module:
+                    dictionary[data.pricelist_multivendor_id.id] = data
+                if wdata._origin.id in dictionary.keys():
+                    dictionary[wdata._origin.id].update({
+                        'product_tmpl_id': self._origin.id,
+                        'min_quantity': wdata.min_qty,
+                        'fixed_price': wdata.price_of_pricelist,
+                        'date_start': wdata.start_date,
+                        'date_end': wdata.end_date,
+                    })
+                else:
+                    wdata.price_list_id.write({'item_ids': [(0, 0, {
+                        'product_tmpl_id': self._origin.id,
+                        'min_quantity': wdata.min_qty,
+                        'fixed_price': wdata.price_of_pricelist,
+                        'date_start': wdata.start_date,
+                        'date_end': wdata.end_date,
+                        'pricelist_multivendor_id': wdata._origin.id
+                    })]})
             else:
-                item_vals['pricelist_multivendor_id'] = line._origin.id
-                line.price_list_id.write({'item_ids': [(0, 0, item_vals)]})
+                wdata.price_list_id.write({'item_ids': [(0, 0, {
+                    'product_tmpl_id': self._origin.id,
+                    'min_quantity': wdata.min_qty,
+                    'fixed_price': wdata.price_of_pricelist,
+                    'date_start': wdata.start_date,
+                    'date_end': wdata.end_date,
+                    'pricelist_multivendor_id': wdata._origin.id
+                })]})
         return res
 
     def send_product_status_mail(self):
-        """Send email on product approval/rejection"""
-        params = self.env['res.config.settings'].search([], order='create_date desc', limit=1)
-        if params.product_approve_admin_mail and params.product_approve_admin_mail_template_id:
-            params.product_approve_admin_mail_template_id.send_mail(self.id, force_send=True)
-        if params.product_approve_seller_mail and params.product_approve_seller_mail_template_id:
-            params.product_approve_seller_mail_template_id.send_mail(self.id, force_send=True)
+        """For sending product status mail"""
+        params = self.env[
+            'res.config.settings'].search([],
+                                          order='create_date desc', limit=1)
+        product_approve_admin_mail = params.product_approve_admin_mail
+        product_approve_seller_mail = params.product_approve_seller_mail
+        if product_approve_admin_mail:
+            name = params.product_approve_admin_mail_template_id.name
+            template = self.env['mail.template'].sudo().search(
+                [('name', '=', name)], limit=1)
+            self.env['mail.template'].browse(template.id).send_mail(
+                self.id, force_send=True)
+        if product_approve_seller_mail:
+            name = params.product_approve_seller_mail_template_id.name
+            template = self.env['mail.template'].sudo().search(
+                [('name', '=', name)], limit=1)
+            self.env['mail.template'].browse(
+                template.id).send_mail(self.id, force_send=True)
 
     def change_state_approved(self):
-        """Admin approves a product"""
+        """ Change product state to Approved when Admin approved """
         self.state = 'approved'
-        config = self.env['ir.config_parameter'].sudo()
-        self.product_price_setting = bool(config.get_param('motoreign_marketplace.product_pricing'))
-        self.product_variants_setting = bool(config.get_param('motoreign_marketplace.product_variants'))
-        self.product_uom = bool(config.get_param('motoreign_marketplace.uom'))
         self.send_product_status_mail()
+        self.product_price_setting = self.env[
+            'ir.config_parameter'].sudo().get_param(
+            'multi_vendor_marketplace.product_pricing')
+        self.product_variants_setting = self.env[
+            'ir.config_parameter'].sudo().get_param(
+            'multi_vendor_marketplace.product_variants')
+        self.product_uom = self.env[
+            'ir.config_parameter'].sudo().get_param(
+            'multi_vendor_marketplace.uom')
 
     @api.onchange('name')
     def _onchange_name(self):
-        """Set internal category from settings when product name changes"""
-        categ_id = self.env['ir.config_parameter'].sudo().get_param(
-            'motoreign_marketplace.internal_categ_id')
-        if categ_id:
-            self.categ_id = self.env['product.category'].browse(int(categ_id))
+        """Automatically updates the product's internal category when the
+        product name is changed."""
+        internal_category = self.env['ir.config_parameter'].sudo().get_param(
+            'multi_vendor_marketplace.internal_categ_id')
+        self.categ_id = self.env['product.category'].browse(
+            internal_category).id
 
     def change_state_pending(self):
-        """Seller submits product for approval"""
+        """ CHANGE PRODUCT TO PENDING STATE WHEN USER SEND REQUEST FOR
+        PRODUCT """
         if self.env['ir.config_parameter'].sudo().get_param(
-                'motoreign_marketplace.product_approval'):
+                'multi_vendor_marketplace.product_approval'):
             self.state = 'approved'
+            self.sudo().send_product_status_mail()
         else:
             self.state = 'pending'
-        self.sudo().send_product_status_mail()
+            self.sudo().send_product_status_mail()
 
     def change_state_reject(self):
-        """Admin rejects a product"""
+        """ WHEN ADMIN REJECT THE PRODUCT REQUEST STATE CHANGE TO REJECTED """
         self.state = 'rejected'
         self.send_product_status_mail()
 
     def toggle_website_published(self):
+        """ PUBLISH THE PRODUCT IN WEBSITE """
         self.is_published = not self.is_published
 
+
     def _group_expand_states(self, states, domain, order):
+        """Expands the selection options for the 'state' field in a group-by
+         operation."""
         return [key for key, val in type(self).state.selection]

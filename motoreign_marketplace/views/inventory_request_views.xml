@@ -5,7 +5,7 @@
         <field name="name">Update Marketplace Product Quantity
         </field>
         <field name="res_model">inventory.request</field>
-        <field name="view_mode">kanban,list,form</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Update Marketplace
                 Product Quantity
@@ -21,16 +21,16 @@
                 <header>
                     <button name="approve_request" class="oe_highlight"
                             type="object"
-                            groups="motoreign_marketplace.motoreign_marketplace_admin"
+                            groups="multi_vendor_marketplace.multi_vendor_marketplace_admin"
                             string="Approve" invisible="state != 'Requested'"/>
                     <button name="reject_request" class="oe_highlight"
                             type="object"
-                            groups="motoreign_marketplace.motoreign_marketplace_admin"
+                            groups="multi_vendor_marketplace.multi_vendor_marketplace_admin"
                             string="Reject" invisible="state != 'Requested'"/>
                     <button name="request" class="oe_highlight"
                             type="object"
-                            groups="motoreign_marketplace.motoreign_marketplace_seller,
-                                motoreign_marketplace.motoreign_marketplace_admin"
+                            groups="multi_vendor_marketplace.multi_vendor_marketplace_seller,
+                                multi_vendor_marketplace.multi_vendor_marketplace_admin"
                             string="Request" invisible="state != 'Draft'"/>
                     <field name="state" widget="statusbar"
                            statusbar_visible="Draft,Approved,Requested,Rejected"/>
@@ -98,7 +98,7 @@
     </record>
     <!--    Menu for Inventory request-->
     <menuitem id="inventory_request" parent="inventory_root"
-              groups="motoreign_marketplace.motoreign_marketplace_admin,motoreign_marketplace.motoreign_marketplace_seller"
+              groups="multi_vendor_marketplace.multi_vendor_marketplace_admin,multi_vendor_marketplace.multi_vendor_marketplace_seller"
               name="Inventory Request" sequence="43"
               action="inventory_request_action"/>
 </odoo>

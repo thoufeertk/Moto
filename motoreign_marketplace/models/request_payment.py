@@ -1,60 +1,80 @@
 # -*- coding: utf-8 -*-
-# Motoreign Multi Vendor Marketplace - Odoo 19
-# License LGPL-3.0
-
+#############################################################################
+#
+#    Cybrosys Technologies Pvt. Ltd.
+#
+#    Copyright (C) 2026-TODAY Cybrosys Technologies(<https://www.cybrosys.com>)
+#    Author: Cybrosys Techno Solutions(<https://www.cybrosys.com>)
+#
+#    You can modify it under the terms of the GNU LESSER
+#    GENERAL PUBLIC LICENSE (LGPL v3), Version 3.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU LESSER GENERAL PUBLIC LICENSE (LGPL v3) for more details.
+#
+#    You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+#    (LGPL v3) along with this program.
+#    If not, see <http://www.gnu.org/licenses/>.
+#
+#############################################################################
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
 
-class RequestPayment(models.TransientModel):
-    """Wizard for sellers to request payment against earned commission"""
+class RequestPayment(models.Model):
+    """Create a RequestPayment class for request for payment"""
     _name = 'request.payment'
-    _description = "Request Payment"
 
-    seller_id = fields.Many2one('res.partner', string='Seller', required=True,
-                                default=lambda self: self.env.user.partner_id.id,
-                                help='Seller')
-    cashable_amount = fields.Float(string='Available Commission',
-                                   help='Total commission available',
-                                   readonly=True)
-    request_amount = fields.Float(string='Requested Amount', required=True,
-                                  help='Amount being requested')
-    payment_description = fields.Text(string='Payment Description', required=True,
-                                      help='Reason for the payment request')
+    seller_id = fields.Many2one('res.partner', string='Seller',
+                                required=True, help='Seller', default=lambda
+                                self: self.env.user.partner_id.id)
+    cashable_amount = fields.Float(string='Commission', help='Commission',
+                                   readonlt=True)
+    request_amount = fields.Float(string='Requested Payment Amount',
+                                  help='Requested Amount', required=True)
+    payment_description = fields.Text(string='Payment Description',
+                                      help='Payment Description',
+                                      required=True)
 
     @api.onchange('seller_id')
-    def _onchange_seller_id(self):
-        """Update available commission when seller changes"""
-        if self.seller_id:
-            self.cashable_amount = self.seller_id.total_commission
+    def onchange_seller(self):
+        """ Display commission in seller profile tab """
+        partner_id = self.env['res.partner'].browse(self.seller_id.id)
+        self.cashable_amount = partner_id.commission
 
     def request_payment(self):
-        """Validate limits then create a seller.payment record"""
-        amount_limit = int(self.env['ir.config_parameter'].sudo().get_param(
-            'motoreign_marketplace.amt_limit') or 0)
-        min_gap = int(self.env['ir.config_parameter'].sudo().get_param(
-            'motoreign_marketplace.min_gap') or 0)
-        partner = self.seller_id
-        today = fields.Date.today()
-        min_date = fields.Date.subtract(today, days=min_gap)
-        recent = self.env['seller.payment'].search([
-            ('seller_id', '=', partner.id),
-            ('state', '=', 'Validated'),
-            ('date', '>=', min_date),
-        ], limit=1)
-        if (self.request_amount > partner.total_commission
-                or (amount_limit and self.request_amount > amount_limit)
-                or recent):
-            raise ValidationError(_(
-                "Amount exceeds your commission balance, the configured limit "
-                "(%s), or the minimum gap of %s days has not passed."
-            ) % (amount_limit, min_gap))
+        """ Request payment """
+        amount_limit = self.env['ir.config_parameter'].sudo().get_param(
+            'multi_vendor_marketplace.amt_limit')
+        min_gap = self.env['ir.config_parameter'].sudo().get_param(
+            'multi_vendor_marketplace.min_gap')
+        partner_id = self.env['res.partner'].search(
+            [('id', '=', self.seller_id.id)])
+        today_date = fields.Date.today()
+        mingap_date = fields.Date.subtract(today_date, days=int(min_gap))
+        date_info_record = self.env['seller.payment'].search(
+            [('seller_id', '=', self.seller_id.id),
+             ('state', '=', 'Validated'), ('date', '>=', mingap_date)],
+            order='date DESC')
+        for checkdate in date_info_record:
+            if (self.request_amount > partner_id.total_commission or
+                    self.request_amount > int(amount_limit) or
+                    checkdate.date >= mingap_date):
+                raise ValidationError(
+                    _("Entered amount is greater than your commission or "
+                      "Amount limit is " + amount_limit + " and Minimum gap "
+                                                          "for next payment "
+                                                          "request " +
+                      min_gap + " days"))
+            break
         self.env['seller.payment'].create({
-            'seller_id': partner.id,
+            'seller_id': self.seller_id.id,
             'payment_mode': 'Cash',
-            'commission': partner.total_commission,
+            'commission': partner_id.commission,
             'payable_amount': self.request_amount,
-            'date': today,
+            'date': fields.Date.today(),
             'type_id': 1,
             'memo': self.payment_description,
             'state': 'Requested',

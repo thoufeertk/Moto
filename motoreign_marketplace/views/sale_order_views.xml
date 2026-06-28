@@ -3,13 +3,13 @@
     <!--    Action for sale orders -->
     <record id="sale_order_action" model="ir.actions.act_window">
         <field name="name">Order Analysis</field>
-        <field name="res_model">sale.order</field>
-        <field name="view_mode">graph,list,form</field>
+<field name="res_model">sale.order</field>
+        <field name="view_mode">graph,tree,form</field>
     </record>
     <!--        Order Analysis menu-->
     <menuitem id="order-analysis" parent="sales"
               name="Order Analysis" sequence="31"
-              groups="motoreign_marketplace.motoreign_marketplace_admin"
+              groups="multi_vendor_marketplace.multi_vendor_marketplace_admin"
               action="sale_order_action"/>
     <!--        Sale order graph view-->
     <record model="ir.ui.view" id="sale_order_view_graph">
@@ -18,7 +18,8 @@
         <field name="type">graph</field>
         <field name="arch" type="xml">
             <graph string="Book" type="bar">
-                                <field name="create_date"/>
+                <field name="tax_totals"/>
+                <field name="create_date"/>
                 <field name="partner_id"/>
             </graph>
         </field>

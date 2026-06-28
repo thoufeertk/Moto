@@ -4,7 +4,7 @@
     <record id="default_template_seller_user"
             model="ir.config_parameter">
         <field name="key">
-            motoreign_marketplace.template_seller_user
+            multi_vendor_marketplace.template_seller_user
         </field>
         <field name="value" ref="template_seller_user"/>
     </record>

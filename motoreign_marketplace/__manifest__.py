@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-# Motoreign Multi Vendor Marketplace - Odoo 19 Enterprise
+# Motoreign Multi Vendor Marketplace — Odoo 19 Enterprise
+# Migrated from Cybrosys multi_vendor_marketplace 17.0.1.0.0
 {
     'name': "Motoreign Multi Vendor Marketplace",
     'version': "19.0.1.0.0",
     'category': 'eCommerce',
-    'summary': 'Multi Vendor Marketplace for Odoo 19 | Seller Management | Commission | eCommerce',
-    'description': """Motoreign Multi Vendor Marketplace enables businesses to run a full
-        multi-vendor eCommerce platform on Odoo 19 Enterprise.""",
+    'summary': 'Multi Vendor Marketplace for Odoo 19 Enterprise',
+    'description': """
+        Multi-Vendor Marketplace enabling multiple sellers to manage
+        products, orders, and payments — with admin commission control.
+    """,
     'author': 'Motoreign',
     'company': 'Motoreign',
     'maintainer': 'Motoreign',
@@ -68,7 +71,7 @@
             'motoreign_marketplace/static/src/scss/partner_rating.scss',
         ],
     },
-    'images': ['static/description/banner.png'],
+    'images': ['static/description/banner.jpg'],
     'license': 'LGPL-3',
     'installable': True,
     'application': True,

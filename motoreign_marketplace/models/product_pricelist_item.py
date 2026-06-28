@@ -1,25 +1,40 @@
 # -*- coding: utf-8 -*-
-# Motoreign Multi Vendor Marketplace - Odoo 19
-# License LGPL-3.0
-
-from odoo import api, fields, models
+#############################################################################
+#
+#    Cybrosys Technologies Pvt. Ltd.
+#
+#    Copyright (C) 2026-TODAY Cybrosys Technologies(<https://www.cybrosys.com>)
+#    Author: Cybrosys Techno Solutions(<https://www.cybrosys.com>)
+#
+#    You can modify it under the terms of the GNU LESSER
+#    GENERAL PUBLIC LICENSE (LGPL v3), Version 3.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU LESSER GENERAL PUBLIC LICENSE (LGPL v3) for more details.
+#
+#    You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+#    (LGPL v3) along with this program.
+#    If not, see <http://www.gnu.org/licenses/>.
+#
+#############################################################################
+from odoo import api, models, fields
 
 
 class ProductPricelistItem(models.Model):
-    """Extends pricelist item to link back to multi-vendor pricelist"""
+    """For deleting price-list items"""
     _inherit = 'product.pricelist.item'
 
     pricelist_multivendor_id = fields.Many2one(
         'multi.vendor.pricelist',
-        string='Pricelist Item',
-        help='Linked multi-vendor pricelist line')
+        string='Price list Item',
+        help='Price list items')
 
     @api.ondelete(at_uninstall=False)
-    def _delete_multivendor_pricelist(self):
-        """Remove linked multi_vendor_pricelist row when pricelist item is deleted"""
-        for rec in self:
-            if rec.pricelist_multivendor_id:
-                self.env.cr.execute(
-                    "DELETE FROM multi_vendor_pricelist WHERE id = %s",
-                    (rec.pricelist_multivendor_id.id,)
-                )
+    def delete_pricelist(self):
+        """ PRICE-LIST LINE DELETE FROM PRODUCT FORM VIEW AND PRICE-LISTVIEW
+        TRIGGER FROM PRICE-LIST VIEW """
+        query = (""" delete from multi_vendor_price-list where id = %s """ %
+                 self.pricelist_multivendor_id.id)
+        self.env.cr.execute(query)

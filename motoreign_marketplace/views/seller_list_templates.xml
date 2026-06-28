@@ -27,7 +27,7 @@
                                  <div align="left"
                                  class="card"
                                  style=" width:145px; margin-left: 13px;margin-top: 13px;height: 140px;padding: 10px;">
-                                 <img t-attf-src="/motoreign_marketplace/static/src/img/user.png" width="125" height="125" alt=""/>
+                                 <img t-attf-src="/multi_vendor_marketplace/static/src/img/user.png" width="125" height="125" alt=""/>
                                  </div>
                             </t>
                             <div>

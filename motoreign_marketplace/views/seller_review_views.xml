@@ -133,7 +133,9 @@
                             <field name="msg"/>
                         </list>
                     </field>
-                <div class="oe_chatter">
+                </sheet>
+                <sheet>
+                    <div class="oe_chatter">
                         <field name="message_follower_ids"/>
                         <field name="message_ids"/>
                     </div>
@@ -160,7 +162,7 @@
         </record>
 <!--        Seller Review menu-->
         <menuitem id="seller_reviews" parent="seller"
-                  groups="motoreign_marketplace.motoreign_marketplace_admin"
+                  groups="multi_vendor_marketplace.multi_vendor_marketplace_admin"
                   name="Seller Reviews" sequence="17"
                   action="seller_review_action"/>
     </data>

@@ -32,7 +32,7 @@
                             <div align="left"
                          class="card"
                          style=" width:90px; margin-left: 13px;margin-top: -81px;height: 91px;">
-                            <img t-attf-src="/motoreign_marketplace/static/src/img/user.png" width="90" height="90" alt=""/>
+                            <img t-attf-src="/multi_vendor_marketplace/static/src/img/user.png" width="90" height="90" alt=""/>
                             </div>
                         </t>
                         <div class="o_website_rating_static" style="margin-left:115px;margin-top:-25px">

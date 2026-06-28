@@ -3,10 +3,10 @@
     <!--  Action for the config settings   -->
     <record id="action_settings" model="ir.actions.act_window">
         <field name="name">Seller Settings</field>
-        <field name="res_model">res.config.settings</field>
+<field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
         <field name="target">current</field>
-        <field name="context">{'module' : 'motoreign_marketplace',
+        <field name="context">{'module' : 'multi_vendor_marketplace',
             'bin_size': False}
         </field>
     </record>
@@ -20,7 +20,7 @@
             <xpath expr="//form" position="inside">
                 <app data-string="Auto Approval Settings"
                      string="Seller Dashboard"
-                     name="motoreign_marketplace"
+                     name="multi_vendor_marketplace"
                      groups="base.group_user">
                     <block title="Auto Approval" name="auto_approval">
                         <setting id="seller_approval" help="When enabled, all seller's requests will be automatically approved">
@@ -230,11 +230,11 @@
 <!--    Configuration menu-->
     <menuitem id="configuration_root" parent="seller_root"
               name="Configuration" sequence="49"
-              groups="motoreign_marketplace.motoreign_marketplace_admin,motoreign_marketplace.motoreign_marketplace_seller"
+              groups="multi_vendor_marketplace.multi_vendor_marketplace_admin,multi_vendor_marketplace.multi_vendor_marketplace_seller"
               action="vendor_dashboard_action"/>
 <!--    Settings menu-->
     <menuitem id="seller_settings" parent="configuration_root"
               name="Settings" sequence="51"
-              groups="motoreign_marketplace.motoreign_marketplace_admin"
+              groups="multi_vendor_marketplace.multi_vendor_marketplace_admin"
               action="action_settings"/>
 </odoo>
