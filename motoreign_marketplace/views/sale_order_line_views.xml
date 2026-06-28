@@ -34,7 +34,7 @@
                             <field name="name" readonly="1"/>
                             <field name="product_uom_qty" readonly="1"/>
                             <field name="qty_delivered" readonly="1"/>
-                            <field name="product_uom_id" readonly="1"/>
+                            <field name="product_uom" readonly="1"/>
                             <field name="order_partner_id" invisible="1"/>
                             <field name="display_type" invisible="1"/>
                             <field name="product_updatable" invisible="1"/>
@@ -46,7 +46,7 @@
                                    readonly="1"/>
                             <field name="price_subtotal"
                                    widget="monetary"/>
-                            <field name="tax_ids" widget="many2many_tags"
+                            <field name="tax_id" widget="many2many_tags"
                                    readonly="1"/>
                             <field name="price_tax" widget="monetary"/>
                             <field name="price_total" widget="monetary"/>

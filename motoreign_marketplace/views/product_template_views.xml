@@ -48,7 +48,7 @@
                         <page string="Information">
                             <group>
                                 <group>
-                                    <field name="type"
+                                    <field name="detailed_type"
                                            string="Product Type"/>
                                     <field name="categ_id"
                                            string="Internal Category"/>
@@ -123,6 +123,9 @@
                             </group>
                             <group>
                                 <group>
+                                    <field name="forcasted_qty"/>
+                                    <field name="initial_qty"/>
+
                                     <field name="weight"/>
                                     <field name="volume"/>
                                 </group>

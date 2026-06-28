@@ -1,23 +1,43 @@
 # -*- coding: utf-8 -*-
-# Motoreign Multi Vendor Marketplace — Odoo 19 Enterprise
-# Migrated from Cybrosys multi_vendor_marketplace 17.0.1.0.0
+#############################################################################
+#
+#    Cybrosys Technologies Pvt. Ltd.
+#
+#    Copyright (C) 2026-TODAY Cybrosys Technologies(<https://www.cybrosys.com>)
+#    Author: Cybrosys Techno Solutions(<https://www.cybrosys.com>)
+#
+#    You can modify it under the terms of the GNU LESSER
+#    GENERAL PUBLIC LICENSE (LGPL v3), Version 3.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU LESSER GENERAL PUBLIC LICENSE (LGPL v3) for more details.
+#
+#    You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+#    (LGPL v3) along with this program.
+#    If not, see <http://www.gnu.org/licenses/>.
+#
+#############################################################################
 {
-    'name': "Motoreign Multi Vendor Marketplace",
+    'name': "Odoo Multi Vendor Marketplace",
     'version': "19.0.1.0.0",
-    'category': 'eCommerce',
-    'summary': 'Multi Vendor Marketplace for Odoo 19 Enterprise',
-    'description': """
-        Multi-Vendor Marketplace enabling multiple sellers to manage
-        products, orders, and payments — with admin commission control.
-    """,
-    'author': 'Motoreign',
-    'company': 'Motoreign',
-    'maintainer': 'Motoreign',
-    'website': 'https://motoreign.com',
-    'depends': [
-        'base', 'sale_management', 'account', 'website',
-        'stock', 'website_sale', 'sale_pdf_quote_builder', 'auth_signup',
-    ],
+    'category': 'eCommerce,Sales ,Warehouse',
+    'summary': 'Odoo Multi Vendor Marketplace, Odoo 19, Multi Vendor',
+    'description': 'The Multi-Vendor Marketplace module in Odoo enables '
+                   'businesses to establish an online platform where multiple'
+                   'vendors can offer their products or services to customers.'
+                   'Vendors can manage their own profiles, products, and '
+                   'orders, while the admin can set commission rates, manage '
+                   'payments, maintain quality control. The module provides'
+                   'customization options, and user-friendly interfaces for a '
+                   'seamless marketplace experience. ',
+    'author': 'Cybrosys Techno Solutions',
+    'company': 'Cybrosys Techno Solutions',
+    'maintainer': 'Cybrosys Techno Solutions',
+    'website': 'https://www.cybrosys.com',
+    'depends': ['base', 'sale_management', 'account', 'website', 'stock',
+                'website_sale', 'sale_pdf_quote_builder'],
     'data': [
         'security/multi_vendor_marketplace_groups.xml',
         'security/inventory_request_security.xml',
@@ -63,18 +83,20 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'motoreign_marketplace/static/src/xml/seller_dashboard.xml',
-            'motoreign_marketplace/static/src/js/seller_dashboard_action.js',
+            'multi_vendor_marketplace/static/src/xml/saller_dashboard.xml',
+            'multi_vendor_marketplace/static/src/js/seller_dashboard_action.js',
         ],
         'web.assets_frontend': [
-            'motoreign_marketplace/static/src/js/rating.js',
-            'motoreign_marketplace/static/src/scss/partner_rating.scss',
+            'multi_vendor_marketplace/static/src/js/sweetalert_fallback.js',
+            'multi_vendor_marketplace/static/src/js/rating.js',
+            'multi_vendor_marketplace/static/src/scss/partner_rating.css',
         ],
     },
-    'images': ['static/description/banner.jpg'],
+    'images': [
+        'static/description/banner.jpg',
+    ],
     'license': 'LGPL-3',
     'installable': True,
     'application': True,
     'auto_install': False,
-    'pre_init_hook': 'pre_init_hook',
 }

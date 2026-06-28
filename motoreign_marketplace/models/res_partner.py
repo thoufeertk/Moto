@@ -37,7 +37,7 @@ class ResPartner(models.Model):
     total_amount = fields.Float(string='Total Amount',
                                 help="Total amount by the seller")
     balance_amount = fields.Float(string='Balance Amount',
-                                  hrlp="Amount balance for the seller")
+                                  help="Amount balance for the seller")
     paid_amount = fields.Float(string='Paid Amount', help="Amount total paid")
     market_place_currency = fields.Monetary(string="Market Place Currency",
                                             help="Currency for the "
@@ -48,7 +48,7 @@ class ResPartner(models.Model):
                                   default=lambda self: self.env
                                   ['res.currency'].search([
                                       ('name', '=', 'USD')]).id,
-                                  readonly=True, hide=True)
+                                  readonly=True)
     return_policy = fields.Html(string='Return Policies',
                                 help="Product return policy for seller")
     shipping_policy = fields.Html(string='Shipping Policies',
@@ -60,7 +60,7 @@ class ResPartner(models.Model):
     profile_message = fields.Html(string="profile Message",
                                   help="Profile message for the seller")
     sale_count = fields.Integer(compute='_compute_sale_count',
-                                sting="Sale Count",
+                                string="Sale Count",
                                 help="For getting total sale count for seller")
     amount_available = fields.Float(compute='_compute_amount_available',
                                     string="Amount available")
@@ -162,7 +162,6 @@ class ResPartner(models.Model):
             'res_model': 'settings.view',
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
-            'view_type': 'form',
             'target': 'new',
             'context': dict(
                 self.env.context,
@@ -188,32 +187,31 @@ class ResPartner(models.Model):
             'res_model': 'request.payment',
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
-            'view_type': 'form',
             'context': {},
             'target': 'new',
         }
 
-    @api.model
-    def create(self, vals):
-        res = super(ResPartner, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        partners = super().create(vals_list)
         params = self.env[
             'res.config.settings'].search([],
                                           order='create_date desc', limit=1)
-        context = {'seller': vals['name'], }
-        if params.seller_request_admin_mail:
-            name = params.seller_request_admin_mail_template_id.name
-            template = self.env['mail.template'].sudo().search(
-                [('name', '=', name)], limit=1)
-            self.env['mail.template'].browse(template.id).with_context(
-                context).send_mail(self.id, force_send=True)
-        if params.seller_request_seller_mail:
-            name = params.seller_request_seller_mail_template_id.name
-            template = self.env['mail.template'].sudo().search(
-                [('name', '=', name)], limit=1)
-            self.env['mail.template'].browse(template.id).with_context(
-                context).send_mail(self.id,
-                                   force_send=True)
-        return res
+        for partner, vals in zip(partners, vals_list):
+            context = {'seller': vals.get('name', partner.name)}
+            if params.seller_request_admin_mail:
+                name = params.seller_request_admin_mail_template_id.name
+                template = self.env['mail.template'].sudo().search(
+                    [('name', '=', name)], limit=1)
+                template.with_context(context).send_mail(
+                    partner.id, force_send=True)
+            if params.seller_request_seller_mail:
+                name = params.seller_request_seller_mail_template_id.name
+                template = self.env['mail.template'].sudo().search(
+                    [('name', '=', name)], limit=1)
+                template.with_context(context).send_mail(
+                    partner.id, force_send=True)
+        return partners
 
     def send_seller_status_mail(self):
         """Send the seller status email"""
@@ -242,7 +240,7 @@ class ResPartner(models.Model):
         sale_group = self.env.ref('sales_team.group_sale_manager')
         seller_user = self.env.ref(
             "multi_vendor_marketplace.multi_vendor_marketplace_seller")
-        user1.sudo().write({'group_ids': [(6, 0, [
+        user1.sudo().write({'groups_id': [(6, 0, [
             internal.id,
             seller_user.id,
             stock_group.id,
@@ -273,7 +271,6 @@ class ResPartner(models.Model):
             'res_model': 'seller.shop',
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
-            'view_type': 'form',
             'target': 'new',
         }
 
@@ -321,7 +318,7 @@ class ResPartner(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Rating in Review',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'seller.review',
             'domain': [('seller_id', '=', self.id)],
         }

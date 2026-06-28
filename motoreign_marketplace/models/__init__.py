@@ -39,4 +39,3 @@ from . import stock_picking
 from . import vendor_dashboard
 from . import website
 from . import website_menu
-from . import ir_actions_report

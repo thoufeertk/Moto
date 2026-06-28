@@ -157,11 +157,11 @@ class SellerPayment(models.Model):
         partner_id = self.seller_id
         self.commission = partner_id.total_commission
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """ For getting the sequence number"""
-        if vals.get('name', 'New'):
-            vals['name'] = self.env['ir.sequence'].next_by_code(
-                'seller.payment')
-        res = super(SellerPayment, self).create(vals)
-        return res
+        for vals in vals_list:
+            if vals.get('name', 'New') == 'New':
+                vals['name'] = self.env['ir.sequence'].next_by_code(
+                    'seller.payment')
+        return super().create(vals_list)

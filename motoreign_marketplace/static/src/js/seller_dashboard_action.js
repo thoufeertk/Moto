@@ -1,46 +1,197 @@
 /** @odoo-module **/
-// Motoreign Multi Vendor Marketplace - Odoo 19 OWL Dashboard
+
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { Component, onWillStart, useState } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
 
-class SellerDashboard extends Component {
-    static template = "multi_vendor_marketplace.SellerDashboard";
-    static props = {};
-
+export class SellerDashboard extends Component {
     setup() {
-        this.rpc = useService("rpc");
         this.action = useService("action");
-        this.state = useState({
-            pending: 0, approved: 0, rejected: 0, user_type: false,
-            seller_pending: 0, seller_approved: 0, seller_rejected: 0,
-            inventory_pending: 0, inventory_approved: 0, inventory_rejected: 0,
-            payment_pending: 0, payment_approved: 0, payment_rejected: 0,
-            order_pending: 0, order_approved: 0, order_shipped: 0, order_cancel: 0,
-        });
+        this.rpc = useService("rpc");
+        this.dashboardData = {};
+
         onWillStart(async () => {
-            const data = await this.rpc("/seller_dashboard", {});
-            Object.assign(this.state, data);
+            this.dashboardData = await this.rpc("/seller_dashboard");
         });
     }
 
-    openView(model, viewType, domain) {
-        this.action.doAction({
-            type: "ir.actions.act_window",
-            res_model: model,
-            view_mode: viewType,
-            views: [[false, viewType]],
-            domain: domain || [],
-            target: "current",
+    async onProductPendingClick() {
+        await this.action.doAction({
+            name: 'Product Pending',
+            type: 'ir.actions.act_window',
+            res_model: 'product.template',
+            view_mode: 'kanban',
+            views: [[this.dashboardData.product_kanban_id, 'kanban']],
+            domain: [['state', '=', 'pending']],
         });
     }
 
-    openProducts(state) { this.openView("product.template", "list", [["state","=",state]]); }
-    openOrders(state) { this.openView("sale.order.line", "list", [["state","=",state]]); }
-    openSellers(state) { this.openView("res.partner", "list", [["state","=",state]]); }
-    openInventory(state) { this.openView("inventory.request", "list", [["state","=",state]]); }
-    openPayments(state) { this.openView("seller.payment", "list", [["state","=",state]]); }
+    async onProductApprovedClick() {
+        await this.action.doAction({
+            name: 'Product Approved',
+            type: 'ir.actions.act_window',
+            res_model: 'product.template',
+            view_mode: 'kanban',
+            views: [[this.dashboardData.product_kanban_id, 'kanban']],
+            domain: [['state', '=', 'approved']],
+        });
+    }
+
+    async onProductRejectedClick() {
+        await this.action.doAction({
+            name: 'Product Rejected',
+            type: 'ir.actions.act_window',
+            res_model: 'product.template',
+            view_mode: 'kanban',
+            views: [[this.dashboardData.product_kanban_id, 'kanban']],
+            domain: [['state', '=', 'rejected']],
+        });
+    }
+
+    async onSellerRejectedClick() {
+        await this.action.doAction({
+            name: 'Seller Rejected',
+            type: 'ir.actions.act_window',
+            res_model: 'res.partner',
+            view_mode: 'kanban,form',
+            views: [[false, 'kanban'], [false, 'form']],
+            domain: [['state', '=', 'Denied']],
+        });
+    }
+
+    async onSellerApprovedClick() {
+        await this.action.doAction({
+            name: 'Seller Approved',
+            type: 'ir.actions.act_window',
+            res_model: 'res.partner',
+            view_mode: 'kanban,form',
+            views: [[false, 'kanban'], [false, 'form']],
+            domain: [['state', '=', 'Approved']],
+        });
+    }
+
+    async onSellerPendingClick() {
+        await this.action.doAction({
+            name: 'Seller Pending',
+            type: 'ir.actions.act_window',
+            res_model: 'res.partner',
+            view_mode: 'kanban,form',
+            views: [[false, 'kanban'], [false, 'form']],
+            domain: [['state', '=', 'Pending for Approval']],
+        });
+    }
+
+    async onInvReqPendingClick() {
+        await this.action.doAction({
+            name: 'Inventory Request Pending',
+            type: 'ir.actions.act_window',
+            res_model: 'inventory.request',
+            view_mode: 'kanban,form',
+            views: [[false, 'kanban'], [false, 'form']],
+            domain: [['state', '=', 'Requested']],
+        });
+    }
+
+    async onInvReqApprovedClick() {
+        await this.action.doAction({
+            name: 'Inventory Request Approved',
+            type: 'ir.actions.act_window',
+            res_model: 'inventory.request',
+            view_mode: 'kanban,form',
+            views: [[false, 'kanban'], [false, 'form']],
+            domain: [['state', '=', 'Approved']],
+        });
+    }
+
+    async onInvReqRejectedClick() {
+        await this.action.doAction({
+            name: 'Inventory Request Rejected',
+            type: 'ir.actions.act_window',
+            res_model: 'inventory.request',
+            view_mode: 'kanban,form',
+            views: [[false, 'kanban'], [false, 'form']],
+            domain: [['state', '=', 'Rejected']],
+        });
+    }
+
+    async onPaymentPendingClick() {
+        await this.action.doAction({
+            name: 'Payment Request Pending',
+            type: 'ir.actions.act_window',
+            res_model: 'seller.payment',
+            view_mode: 'kanban,form',
+            views: [[false, 'kanban'], [false, 'form']],
+            domain: [['state', '=', 'Requested']],
+        });
+    }
+
+    async onPaymentApprovedClick() {
+        await this.action.doAction({
+            name: 'Payment Request Approved',
+            type: 'ir.actions.act_window',
+            res_model: 'seller.payment',
+            view_mode: 'kanban,form',
+            views: [[false, 'kanban'], [false, 'form']],
+            domain: [['state', '=', 'Validated']],
+        });
+    }
+
+    async onPaymentRejectedClick() {
+        await this.action.doAction({
+            name: 'Payment Request Rejected',
+            type: 'ir.actions.act_window',
+            res_model: 'seller.payment',
+            view_mode: 'kanban,form',
+            views: [[false, 'kanban'], [false, 'form']],
+            domain: [['state', '=', 'Rejected']],
+        });
+    }
+
+    async onOrderPendingClick() {
+        await this.action.doAction({
+            name: 'Sale Order Pending',
+            type: 'ir.actions.act_window',
+            res_model: 'sale.order.line',
+            view_mode: 'kanban,form',
+            views: [[this.dashboardData.sale_order_kanban_id, 'kanban'], [this.dashboardData.sale_order_form_id, 'form']],
+            domain: [['state', '=', 'pending']],
+        });
+    }
+
+    async onOrderApprovedClick() {
+        await this.action.doAction({
+            name: 'Sale Order Approved',
+            type: 'ir.actions.act_window',
+            res_model: 'sale.order.line',
+            view_mode: 'kanban,form',
+            views: [[this.dashboardData.sale_order_kanban_id, 'kanban'], [this.dashboardData.sale_order_form_id, 'form']],
+            domain: [['state', '=', 'approved']],
+        });
+    }
+
+    async onOrderShippedClick() {
+        await this.action.doAction({
+            name: 'Sale Order Shipped',
+            type: 'ir.actions.act_window',
+            res_model: 'sale.order.line',
+            view_mode: 'kanban,form',
+            views: [[this.dashboardData.sale_order_kanban_id, 'kanban'], [this.dashboardData.sale_order_form_id, 'form']],
+            domain: [['state', '=', 'shipped']],
+        });
+    }
+
+    async onOrderCancelClick() {
+        await this.action.doAction({
+            name: 'Sale Order cancelled',
+            type: 'ir.actions.act_window',
+            res_model: 'sale.order.line',
+            view_mode: 'kanban,form',
+            views: [[this.dashboardData.sale_order_kanban_id, 'kanban'], [this.dashboardData.sale_order_form_id, 'form']],
+            domain: [['state', '=', 'cancel']],
+        });
+    }
 }
 
-registry.category("actions").add(
-    "multi_vendor_marketplace.seller_dashboard_action", SellerDashboard);
+SellerDashboard.template = "multi_vendor_marketplace.SellerDashBoard";
+
+registry.category("actions").add("seller_dashboard_tag", SellerDashboard);

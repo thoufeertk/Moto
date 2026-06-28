@@ -11,8 +11,8 @@
         </field>
     </record>
 <!--    Tree view-->
-    <record id="seller_payment_view_tree" model="ir.ui.view">
-        <field name="name">seller.payment.view.tree</field>
+    <record id="seller_payment_view_list" model="ir.ui.view">
+        <field name="name">seller.payment.view.list</field>
         <field name="model">seller.payment</field>
         <field name="arch" type="xml">
             <list>
@@ -82,9 +82,10 @@
         <field name="model">seller.payment</field>
         <field name="arch" type="xml">
             <search string="Search contacts">
-                                    <filter string="Seller" name="seller"
+                <group expand="0" string="Group By">
+                    <filter string="Seller" name="seller"
                             context="{'group_by': 'seller_id'}"/>
-
+                </group>
             </search>
         </field>
     </record>

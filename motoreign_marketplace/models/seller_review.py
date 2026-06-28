@@ -54,7 +54,7 @@ class SellerReview(models.Model):
     state = fields.Selection(selection=[('unpublished', 'Unpublished'),
                                         ('published', 'Published')],
                              string='Status', help="state of the review",
-                             default='unpublished', tracking="1")
+                             default='unpublished', tracking=True)
     help_info_ids = fields.One2many('helpful.info', 'review_id',
                                     string="Help info",
                                     help="Helpful info details")
@@ -80,12 +80,12 @@ class SellerReview(models.Model):
                              'message': vals['message']})
                 check.unpub()
         else:
+            vals = dict(vals)
             if publish:
-                check.sudo().pub()
-                return super(SellerReview, self).sudo().create(vals)
+                vals['state'] = 'published'
             else:
-                check.sudo().unpub()
-                return super(SellerReview, self).sudo().create(vals)
+                vals['state'] = 'unpublished'
+            return self.sudo().create(vals)
 
     def action_publish(self):
         """ Function to publish the review"""

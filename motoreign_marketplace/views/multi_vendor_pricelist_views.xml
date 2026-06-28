@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Tree view for  'multi.vendor.pricelist' model  -->
-    <record id="multi_vendor_pricelis_view_tree" model="ir.ui.view">
-        <field name="name">multi.vendor.pricelist.view.tree</field>
+    <record id="multi_vendor_pricelis_view_list" model="ir.ui.view">
+        <field name="name">multi.vendor.pricelist.view.list</field>
         <field name="model">multi.vendor.pricelist</field>
         <field name="arch" type="xml">
             <list editable="bottom">

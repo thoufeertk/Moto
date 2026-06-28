@@ -21,7 +21,8 @@
     <!--    Action and view for settings.view model-->
     <record id="settings_view_action" model="ir.actions.act_window">
         <field name="name">Default Settings</field>
-<field name="res_model">settings.view</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">settings.view</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="settings_view_for_users"/>
         <field name="target">new</field>

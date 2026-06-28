@@ -48,7 +48,7 @@ class ProductTemplate(models.Model):
     acc_pro_id = fields.Many2one("product.template",
                               string="Accessory Products",
                               help='Accessory products')
-    forecasted_qty = fields.Integer(string='Forcasted quantity',
+    forcasted_qty = fields.Integer(string='Forcasted quantity',
                                    help='Forcasted quantity')
     initial_qty = fields.Integer(string='Initial quantity',
                                  help='Initial quantity')
@@ -68,12 +68,15 @@ class ProductTemplate(models.Model):
                                               help='Product variants settings')
     product_uom = fields.Boolean(string='Product uom', help='Product uom')
 
-    def _create(self, data_list):
-        """Supering the create function to change category """
-        res = super(ProductTemplate, self)._create(data_list)
-        self.categ_id = [self.env['ir.config_parameter'].sudo().get_param(
-            'multi_vendor_marketplace.internal_categ_id')]
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Apply the configured marketplace category to new seller products."""
+        products = super().create(vals_list)
+        category_id = self.env['ir.config_parameter'].sudo().get_param(
+            'multi_vendor_marketplace.internal_categ_id')
+        if category_id:
+            products.write({'categ_id': int(category_id)})
+        return products
 
     def write(self, vals):
         """ Pricelist Creation from Product form view """

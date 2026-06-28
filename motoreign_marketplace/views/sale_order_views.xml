@@ -3,8 +3,9 @@
     <!--    Action for sale orders -->
     <record id="sale_order_action" model="ir.actions.act_window">
         <field name="name">Order Analysis</field>
-<field name="res_model">sale.order</field>
-        <field name="view_mode">graph,tree,form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">graph,list,form</field>
     </record>
     <!--        Order Analysis menu-->
     <menuitem id="order-analysis" parent="sales"

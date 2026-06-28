@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!--  Tree view for stock moves  -->
-    <record id="stock_moves_view_tree" model="ir.ui.view">
+    <record id="stock_moves_view_list" model="ir.ui.view">
         <field name="name">Stock Moves</field>
         <field name="model">stock.move</field>
         <field name="arch" type="xml">

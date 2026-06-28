@@ -8,8 +8,8 @@
         <field name="context">{"search_default_recommend_filter":1}</field>
     </record>
     <!--        SELLER REVIEW TREE VIEW-->
-    <record id="seller_recommend_view_tree" model="ir.ui.view">
-        <field name="name">seller.recommend.view.tree</field>
+    <record id="seller_recommend_view_list" model="ir.ui.view">
+        <field name="name">seller.recommend.view.list</field>
         <field name="model">seller.recommend</field>
         <field name="arch" type="xml">
             <list string="Seller Review">

@@ -8,7 +8,7 @@
         <field name="context">{"search_default_state_filter":1}</field>
     </record>
 <!--    Tree view-->
-    <record id="seller_review_view_tree" model="ir.ui.view">
+    <record id="seller_review_view_list" model="ir.ui.view">
         <field name="name">Seller Review</field>
         <field name="model">seller.review</field>
         <field name="arch" type="xml">
@@ -127,7 +127,7 @@
                     <div style="color: #7c6ca1; font-size:20px;">
                         Review Helpful / Not Helpful
                     </div>
-                    <field name="help_info_ids" >
+                    <field name="help_info_ids" widget="one2many_list">
                         <list editable="bottom">
                             <field name="customer_id"/>
                             <field name="msg"/>

@@ -35,24 +35,27 @@ class SellerRecommend(models.Model):
     seller_id = fields.Many2one('res.partner', string="Seller",
                                 help="For getting seller name", required=True)
     recommend = fields.Selection(selection=[('no', 'NO'), ('yes', 'YES')],
-                                 default='NO', tracking="1")
+                                 default='NO', tracking=True)
     date = fields.Date(string="Date", help="Storing date",
                        default=fields.Date.today, required=True)
     state = fields.Selection(selection=[('unpublished', 'Unpublished'),
                                         ('published', 'Published')],
                              string='Status',
                              help="Status of the Recommendation",
-                             default='unpublished', tracking="1")
+                             default='unpublished', tracking=True)
 
     @api.model
     def recommend_func(self, vals):
         """Create or update the recommendation for the seller by customers"""
+        vals = dict(vals)
+        customer_id = vals.pop('customer_id', vals.get('partner_id'))
+        vals['partner_id'] = customer_id
         check = self.search([('seller_id', '=', int(vals['seller_id'])),
-                             ('customer_id', '=', int(vals['customer_id']))])
+                             ('partner_id', '=', int(customer_id))])
         if check:
             check.write({'recommend': vals['recommend']})
         else:
-            return super(SellerRecommend, self).create(vals)
+            return self.create(vals)
 
     def action_publish(self):
         """ Function to change the state when publish the seller
